@@ -64,4 +64,10 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    //Dots Indicator
+    implementation(libs.dotsindicator)
+
+    //Lottie
+    implementation(libs.lottie)
+
 }

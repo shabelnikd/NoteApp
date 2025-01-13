@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onBoardFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".ui.fragments.onboard.OnBoardFragment">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/onBoardViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="52dp"
+        android:fontFamily="@font/potta_one_regular"
+        android:text="@string/text_on_board_notes"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvClickableSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:text="@string/text_on_board_skip"
+        android:textColor="#D88B02"
+        android:textSize="15sp"
+
+        />
+
+    <!-- Y позиция этого элемента задается в OnBoarPageFragment-->
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:dotsClickable="true"
+        app:dotsColor="#C4C4C4"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="12dp"
+        app:dotsSpacing="6dp"
+        app:dotsWidthFactor="1"
+        app:selectedDotColor="#D88B02" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginHorizontal="66dp"
+        android:layout_marginBottom="72dp"
+        android:background="@drawable/bg_button_start"
+        android:text="@string/text_on_board_start"
+        android:letterSpacing="0.02"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="21sp"
+        android:textStyle="bold"
+
+        />
+
+</FrameLayout>
