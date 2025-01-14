@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".ui.activities.auth.FirebaseUIActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:layout_marginTop="52dp"
+        android:fontFamily="@font/potta_one_regular"
+        android:text="@string/text_on_board_notes"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+
+    <ImageView
+        android:id="@+id/ivNoteIcon"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/ic_note"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Авторизация"
+        android:textColor="@color/white"
+        android:textFontWeight="300"
+        android:textSize="18sp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivNoteIcon" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnGoogleAuth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginHorizontal="94dp"
+        android:layout_marginVertical="104dp"
+        android:background="@drawable/bg_oauth_google"
+
+        android:drawableStart="@drawable/logo_google_48dp"
+
+        android:paddingHorizontal="12dp"
+        android:text="Sign in with Google"
+
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
