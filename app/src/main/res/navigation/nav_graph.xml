@@ -9,7 +9,7 @@
         android:id="@+id/onBoardFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.onboard.OnBoardFragment"
         android:label="fragment_on_board"
-        tools:layout="@layout/fragment_on_board" >
+        tools:layout="@layout/fragment_on_board">
         <action
             android:id="@+id/action_onBoardFragment_to_firebaseUIActivity"
             app:destination="@id/firebaseUIActivity" />
@@ -21,7 +21,25 @@
         tools:layout="@layout/activity_firebase_ui" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.shabelnikd.noteapp.ui.fragments.onboard.HomeFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_foldersFragment"
+            app:destination="@id/foldersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFolderFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.folders.AddFolderFragment"
+        android:label="fragment_add_folder"
+        tools:layout="@layout/fragment_add_folder" />
+    <fragment
+        android:id="@+id/foldersFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.folders.FoldersFragment"
+        android:label="fragment_folders"
+        tools:layout="@layout/fragment_folders">
+        <action
+            android:id="@+id/action_foldersFragment_to_addFolderFragment"
+            app:destination="@id/addFolderFragment" />
+    </fragment>
 </navigation>

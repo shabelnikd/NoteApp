@@ -97,6 +97,7 @@ class OnBoardFragment : Fragment() {
 
         binding.btnStart.setOnClickListener {
             findNavController().navigate(R.id.action_onBoardFragment_to_firebaseUIActivity)
+            onDestroyView()
             lifecycleScope.launch {
                 DataStoreManager.setFirstLaunch(false)
             }

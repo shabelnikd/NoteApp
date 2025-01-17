@@ -1,13 +1,12 @@
-package com.shabelnikd.noteapp.ui.fragments.onboard
+package com.shabelnikd.noteapp.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {

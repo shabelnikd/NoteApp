@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".ui.fragments.notes.AddNewNoteFragment">
+
+
+    <LinearLayout
+        android:id="@+id/llNoteTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnNewNoteCancel"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#70FFFFFF"
+            android:contentDescription="Button to cancel new note"
+            android:src="@drawable/ic_cancel_arrow" />
+
+        <TextView
+            android:id="@+id/tvNoteDateDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:elegantTextHeight="true"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textColor="#80FFFFFF"
+            tools:text="30 мая" />
+
+        <TextView
+            android:id="@+id/tvNoteDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:elegantTextHeight="true"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textColor="#50FFFFFF"
+            tools:text="17:21" />
+
+
+        <ImageButton
+            android:id="@+id/btnNoteContext"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:src="@drawable/bg_btn_note_context_state" />
+        
+        
+        <TextView
+            android:id="@+id/tvSaveNoteClickable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="Готово"
+            android:visibility="gone"
+            android:layout_marginStart="12dp"
+            android:textColor="#D88B02"
+            android:elegantTextHeight="true"
+            />
+
+
+    </LinearLayout>
+
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
+        app:layout_constraintTop_toBottomOf="@id/llNoteTopBar">
+
+        <EditText
+            android:id="@+id/etNoteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:elegantTextHeight="true"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:hint="Title..."
+            tools:text="Как стать русалкой"
+            android:textColor="#70FFFFFF"
+            android:textColorHint="#70FFFFFF"
+            android:textSize="24sp" />
+
+    </HorizontalScrollView>
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:paddingHorizontal="20dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
+
+        <EditText
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:elegantTextHeight="true"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:hint="Text"
+            tools:text="Выпить воды из канализации\nУбить дракона\nУбраться дома"
+            android:textColor="#70FFFFFF"
+            android:textColorHint="#70FFFFFF"
+            android:textSize="14sp" />
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
