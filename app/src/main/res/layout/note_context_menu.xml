@@ -3,7 +3,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="152dp"
-    android:layout_height="140dp"
+    android:layout_height="174dp"
     app:cardBackgroundColor="#5B5B5B"
     app:cardCornerRadius="4dp">
 
@@ -34,6 +34,32 @@
             android:textSize="14sp"
             android:includeFontPadding="false"
             />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#8B8B8B"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnResetColor"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="top"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:background="@android:color/transparent"
+            android:drawableEnd="@drawable/baseline_color_lens_24"
+            android:elegantTextHeight="true"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="start|center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="Сбросить цвет"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            />
         
         <View
             android:layout_width="match_parent"
@@ -47,6 +73,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:textSize="12sp"
+            android:elegantTextHeight="true"
             android:layout_marginStart="12sp"
             android:layout_marginTop="8dp"
             android:text="Поменять цвет"
@@ -57,6 +84,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginHorizontal="12dp"
             >
 

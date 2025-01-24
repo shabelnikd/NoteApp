@@ -1,27 +1,27 @@
 package com.shabelnikd.noteapp.ui.fragments.onboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.shabelnikd.noteapp.R
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
+import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.OnBoardAdapter
 import com.shabelnikd.noteapp.databinding.FragmentOnBoardBinding
-import com.shabelnikd.noteapp.datastore.DataStoreManager
-import kotlinx.coroutines.launch
+import com.shabelnikd.noteapp.utils.PreferenceHelper
 
 class OnBoardFragment : Fragment() {
 
     private var _binding: FragmentOnBoardBinding? = null
     private val binding get() = _binding!!
+
+    private val sharedPreferences = PreferenceHelper()
 
 
     override fun onCreateView(
@@ -34,6 +34,8 @@ class OnBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.btnStart.visibility = View.INVISIBLE
+        sharedPreferences.initialize(requireContext())
         initialization()
         setupListeners()
     }
@@ -96,11 +98,13 @@ class OnBoardFragment : Fragment() {
         })
 
         binding.btnStart.setOnClickListener {
-            findNavController().navigate(R.id.action_onBoardFragment_to_firebaseUIActivity)
-            onDestroyView()
-            lifecycleScope.launch {
-                DataStoreManager.setFirstLaunch(false)
-            }
+            sharedPreferences.isFirstLaunch = false
+
+            findNavController().navigate(
+                R.id.homeFragment, null,
+                NavOptions.Builder().setPopUpTo(R.id.nav_graph, true)
+                    .build()
+            )
         }
     }
 

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#50252525"
-    tools:context=".ui.fragments.folders.AddFolderFragment">
+    android:background="#50252525">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -44,7 +42,8 @@
                 android:background="@drawable/bg_folder"
                 android:elegantTextHeight="true"
                 android:paddingHorizontal="16dp"
-                android:text="Введите название папки"
+                android:hint= "Введите название папки"
+                android:textColorHint="#40FFFFFF"
                 android:textColor="#40FFFFFF"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/tvNewFolder"
@@ -56,15 +55,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
                 android:background="@drawable/bg_btn_new_folder_cancel"
                 android:elegantTextHeight="true"
                 android:text="Отмена"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnNewFolder"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etNewFolderName"
 
                 />
@@ -73,9 +72,9 @@
                 android:id="@+id/btnNewFolder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_btn_add_new_folder"
                 android:elegantTextHeight="true"
                 android:text="Сохранить"

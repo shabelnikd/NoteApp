@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:cardCornerRadius="8dp"
+    android:layout_height="wrap_content"
     android:layout_marginVertical="4dp"
-    android:layout_height="wrap_content">
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,6 +19,8 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins_semi_bold"
             android:lineHeight="18sp"
             android:maxLines="1"
@@ -26,8 +28,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Планы на жизнь:"
-            android:elegantTextHeight="true"
-            android:ellipsize="end"
 
             />
 
@@ -35,30 +35,28 @@
             android:id="@+id/tvNoteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins_regular"
             android:lineHeight="15sp"
             android:maxLines="1"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            tools:text="Посадить сына, вырастить дом, построить дерево. Нужно посадить сына, вырастить дом, построить дерево. Нужно..."
-            android:elegantTextHeight="true"
-            android:ellipsize="end"
-            />
+            tools:text="Посадить сына, вырастить дом, построить дерево. Нужно посадить сына, вырастить дом, построить дерево. Нужно..." />
 
         <TextView
             android:id="@+id/tvNoteCreated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_bold"
-            app:layout_constraintTop_toBottomOf="@id/tvNoteText"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="4dp"
             android:elegantTextHeight="true"
+            android:fontFamily="@font/poppins_bold"
             android:lineHeight="12dp"
             android:textSize="10sp"
-            tools:text="31 мая 12:45"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNoteText"
+            tools:text="31 мая 12:45" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
