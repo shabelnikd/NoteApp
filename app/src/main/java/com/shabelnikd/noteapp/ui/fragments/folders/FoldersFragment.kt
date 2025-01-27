@@ -10,13 +10,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.liveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.shabelnikd.noteapp.Dependencies
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.FoldersAdapter
+import com.shabelnikd.noteapp.database.tuples.FolderTuple
 import com.shabelnikd.noteapp.databinding.FragmentFoldersBinding
 import com.shabelnikd.noteapp.models.Folder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FoldersFragment : Fragment() {
@@ -26,6 +32,11 @@ class FoldersFragment : Fragment() {
 
     private val foldersAdapter = FoldersAdapter()
     private val viewModel: FolderViewModel by viewModels()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +68,12 @@ class FoldersFragment : Fragment() {
     }
 
     private fun loadData() {
-        viewModel.allFolders.observe(viewLifecycleOwner) { folders ->
-            foldersAdapter.submitList(folders)
+        lifecycleScope.launch {
+            Dependencies.noteRepository.getAllFolders().observe(viewLifecycleOwner) { folders ->
+                foldersAdapter.submitList(folders)
+            }
         }
+
     }
 
     private fun setupListeners() {
@@ -85,11 +99,13 @@ class FoldersFragment : Fragment() {
 
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+        dialog.window?.container?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
 
         view.findViewById<AppCompatButton>(R.id.btnNewFolder).setOnClickListener {
             viewModel.insertNewFolder(
                 Folder(view.findViewById<EditText>(R.id.etNewFolderName).text.toString())
-                    .toFolderEntity())
+                    .toFolderEntity()
+            )
 
             dialog.dismiss()
 

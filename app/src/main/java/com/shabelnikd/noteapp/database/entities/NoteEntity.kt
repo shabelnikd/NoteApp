@@ -1,5 +1,6 @@
 package com.shabelnikd.noteapp.database.entities
 
+import androidx.room.AutoMigration
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -24,6 +25,6 @@ data class NoteEntity(
     @ColumnInfo(name = "folder_id") val folderId: Long?,
     val title: String,
     val text: String,
-    @ColumnInfo(defaultValue = "#191818") val colorHex: String,
-    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP") val createdAt: String,
+    @ColumnInfo(defaultValue = "#424242") val colorHex: String = "#424242",
+    val createdAt: String,
 )

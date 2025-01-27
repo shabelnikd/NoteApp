@@ -1,5 +1,6 @@
 package com.shabelnikd.noteapp.database
 
+import androidx.lifecycle.LiveData
 import com.shabelnikd.noteapp.database.dao.NoteDao
 import com.shabelnikd.noteapp.database.entities.FolderEntity
 import com.shabelnikd.noteapp.database.entities.NoteEntity
@@ -15,7 +16,7 @@ class NoteRepository(private val noteDao: NoteDao) {
         }
     }
 
-    suspend fun getAllNotes(): List<NoteTuple> {
+    suspend fun getAllNotes(): LiveData<List<NoteTuple>> {
         return withContext(Dispatchers.IO) {
             return@withContext noteDao.getAllNotes()
         }
@@ -34,15 +35,33 @@ class NoteRepository(private val noteDao: NoteDao) {
         }
     }
 
-    suspend fun getAllFolders(): List<FolderTuple> {
+    suspend fun getAllFolders(): LiveData<List<FolderTuple>> {
         return withContext(Dispatchers.IO) {
             return@withContext noteDao.getAllFolders()
         }
     }
 
-    suspend fun getNotesByFolderId(folderId: Long): List<NoteTuple> {
+    suspend fun getNotesByFolderId(folderId: Long): LiveData<List<NoteTuple>> {
         return withContext(Dispatchers.IO) {
             return@withContext noteDao.getNotesByFolderId(folderId)
+        }
+    }
+
+    suspend fun getNoteById(noteId: Long): LiveData<NoteTuple> {
+        return withContext(Dispatchers.IO) {
+            return@withContext noteDao.getNoteById(noteId)
+        }
+    }
+
+    suspend fun updateNote(note: NoteTuple) {
+        return withContext(Dispatchers.IO) {
+            noteDao.updateNote(note)
+        }
+    }
+
+    suspend fun getFolderById(folderId: Long): LiveData<FolderTuple>  {
+        return withContext(Dispatchers.IO) {
+            return@withContext noteDao.getFolderById(folderId)
         }
     }
 

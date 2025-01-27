@@ -18,22 +18,10 @@ class FolderViewModel @Inject constructor(
     private val folderService: FolderService
 ) : ViewModel() {
 
-    private val _allFolders = MutableLiveData<List<FolderTuple>>()
-    val allFolders = _allFolders
-
-    init {
-        getAllFolders()
-    }
 
     fun selectFolder(folderId: Long) {
         viewModelScope.launch {
             folderService.setCurrentFolderId(folderId)
-        }
-    }
-
-    fun getAllFolders(){
-        viewModelScope.launch {
-            _allFolders.value = Dependencies.noteRepository.getAllFolders()
         }
     }
 

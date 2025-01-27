@@ -89,6 +89,7 @@
             >
 
             <ImageButton
+                android:id="@+id/setYellow"
                 android:layout_width="40dp"
                 android:layout_height="32dp"
                 android:background="@drawable/bg_color"
@@ -96,6 +97,7 @@
                 android:contentDescription="Yellow" />
 
             <ImageButton
+                android:id="@+id/setPurple"
                 android:layout_width="40dp"
                 android:layout_height="32dp"
                 android:layout_marginHorizontal="4dp"
@@ -104,6 +106,7 @@
                 android:contentDescription="Purple" />
 
             <ImageButton
+                android:id="@+id/setPink"
                 android:layout_width="40dp"
                 android:layout_height="32dp"
                 android:background="@drawable/bg_color"
@@ -120,6 +123,7 @@
             >
 
             <ImageButton
+                android:id="@+id/setRed"
                 android:layout_width="40dp"
                 android:layout_height="32dp"
                 android:background="@drawable/bg_color"
@@ -127,6 +131,7 @@
                 android:contentDescription="Red" />
 
             <ImageButton
+                android:id="@+id/setGreen"
                 android:layout_width="40dp"
                 android:layout_height="32dp"
                 android:layout_marginHorizontal="4dp"
@@ -135,6 +140,7 @@
                 android:contentDescription="Green" />
 
             <ImageButton
+                android:id="@+id/setBlue"
                 android:layout_width="40dp"
                 android:layout_height="32dp"
                 android:background="@drawable/bg_color"

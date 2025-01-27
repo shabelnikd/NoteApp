@@ -1,5 +1,7 @@
 package com.shabelnikd.noteapp.adapters
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -46,21 +48,21 @@ class NoteAdapter(
                 true -> {
                     bindingGrid.tvNoteText.text = note.text
                     bindingGrid.tvTitle.text = note.title
-                    bindingGrid.tvNoteCreated.text = note.createdAt
-//                    Snackbar.make(holder.itemView, "${sharedPreferences.layoutManager} true", 1000).show()
+                    bindingGrid.tvNoteCreated.text = note.createdAt.replace('|', ' ')
+                    bindingGrid.gridCard.setCardBackgroundColor(Color.parseColor(note.colorHex))
                 }
 
                 else -> {
                     bindingList.tvNoteText.text = note.text
                     bindingList.tvTitle.text = note.title
-                    bindingList.tvNoteCreated.text = note.createdAt
-//                    Snackbar.make(holder.itemView, "${sharedPreferences.layoutManager} else", 1000).show()
+                    bindingList.tvNoteCreated.text = note.createdAt.replace('|', ' ')
+                    bindingList.listCard.setCardBackgroundColor(Color.parseColor(note.colorHex))
                 }
             }
 
-//            binding.btnFolder.setOnClickListener {
-//                onFolderClick?.invoke(folder.id)
-//            }
+            holder.itemView.setOnClickListener {
+                onNoteClick?.invoke(note.id)
+            }
         }
 
     }

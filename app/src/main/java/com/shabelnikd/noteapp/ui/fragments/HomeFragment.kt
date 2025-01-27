@@ -2,12 +2,16 @@ package com.shabelnikd.noteapp.ui.fragments
 
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,11 +22,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.shabelnikd.noteapp.Dependencies
 import com.shabelnikd.noteapp.adapters.NoteAdapter
+import com.shabelnikd.noteapp.database.tuples.NoteTuple
 import com.shabelnikd.noteapp.databinding.FragmentHomeBinding
-import com.shabelnikd.noteapp.models.ColorsEnum
-import com.shabelnikd.noteapp.models.Note
 import com.shabelnikd.noteapp.utils.PreferenceHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,6 +52,8 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
+    private val searchScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -57,39 +67,134 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (FirebaseAuth.getInstance().currentUser == null) createSignInIntent()
-        initialize()
         setupOrChangeLayout()
         checkData()
         setupListeners()
     }
 
-    private fun checkData() {
+
+    private fun setupOrChangeLayout() {
+        when (sharedPreferences.layoutManager) {
+            true -> {
+                noteGridAdapter.setOnNoteClickListener { noteId ->
+                    navigateToChangeNote(noteId)
+                }
+                binding.rvNotes.layoutManager = GridLayoutManager(requireContext(), 2)
+                binding.rvNotes.adapter = noteGridAdapter
+                binding.layoutChanger.isActivated = sharedPreferences.layoutManager
+            }
+
+            false -> {
+                noteListAdapter.setOnNoteClickListener { noteId ->
+                    navigateToChangeNote(noteId)
+                }
+                binding.rvNotes.layoutManager = LinearLayoutManager(requireContext())
+                binding.rvNotes.adapter = noteListAdapter
+                binding.layoutChanger.isActivated = sharedPreferences.layoutManager
+            }
+        }
+    }
+
+    private fun checkData(query: String = "") {
+        binding.tvNotes.text = ""
+
         viewModel.currentFolderId.observe(viewLifecycleOwner) { folderId ->
             when (folderId) {
                 -1L -> {
-                    viewModel.allNotes.observe(viewLifecycleOwner) { notes ->
-                        noteListAdapter.submitList(notes)
-                        noteGridAdapter.submitList(notes)
+                    lifecycleScope.launch {
+                        binding.tvNotes.text = "Все заметки"
+                        filterByEditText(
+                            Dependencies.noteRepository.getAllNotes(), query
+                        ).observe(viewLifecycleOwner) { notes ->
+                            noteListAdapter.submitList(notes)
+                            noteGridAdapter.submitList(notes)
+                        }
                     }
+
                 }
 
                 else -> {
                     lifecycleScope.launch {
-                        Dependencies.noteRepository.getNotesByFolderId(folderId)
-                            .observe(viewLifecycleOwner) { notes ->
-                                noteListAdapter.submitList(notes)
-                                noteGridAdapter.submitList(notes)
+                        Dependencies.noteRepository.getFolderById(folderId)
+                            .observe(viewLifecycleOwner) { folder ->
+                                binding.tvNotes.text = folder.folderName
                             }
+
+                        filterByEditText(
+                            Dependencies.noteRepository.getNotesByFolderId(folderId), query
+                        ).observe(viewLifecycleOwner) { notes ->
+                            noteListAdapter.submitList(notes)
+                            noteGridAdapter.submitList(notes)
+                        }
                     }
 
                 }
             }
         }
-
     }
 
-    private fun initialize() {
+    private fun filterByEditText(
+        notesList: LiveData<List<NoteTuple>>,
+        searchText: String
+    ): LiveData<List<NoteTuple>> {
+        return when (searchText.isEmpty()) {
+            true -> notesList
+            false -> notesList.map { notes ->
+                notes.filter { note ->
+                    note.text.contains(
+                        binding.etSearchNotes.text.toString(),
+                        ignoreCase = true
+                    ) || note.title.contains(
+                        binding.etSearchNotes.text.toString(),
+                        ignoreCase = true
+                    ) || note.createdAt.contains(
+                        binding.etSearchNotes.text.toString(),
+                        ignoreCase = true
+                    )
+                }
+            }
+        }
     }
+
+    private fun setupListeners() {
+
+        binding.etSearchNotes.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                searchScope.coroutineContext.cancelChildren()
+
+                searchScope.launch {
+                    delay(300)
+                    checkData(p0.toString())
+                }
+            }
+        })
+
+        binding.btnAddNote.setOnClickListener {
+            navigateToChangeNote()
+        }
+
+        binding.layoutChanger.setOnClickListener {
+            sharedPreferences.layoutManager = !sharedPreferences.layoutManager
+            setupOrChangeLayout()
+        }
+
+        binding.btnOpenFolders.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFoldersFragment())
+        }
+    }
+
+    private fun navigateToChangeNote(noteId: Long = -1) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToAddOrChangeNoteFragment(
+                noteId
+            )
+        )
+    }
+
 
     private fun createSignInIntent() {
         val providers = arrayListOf(
@@ -111,33 +216,5 @@ class HomeFragment : Fragment() {
             Snackbar.make(binding.root, "Неудачная попытка", 1000).show()
         }
     }
-
-
-    private fun setupListeners() {
-
-        binding.btnAddNote.setOnClickListener {
-
-        }
-
-        binding.layoutChanger.setOnClickListener {
-            sharedPreferences.layoutManager = !sharedPreferences.layoutManager
-            setupOrChangeLayout()
-        }
-
-        binding.btnOpenFolders.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFoldersFragment())
-        }
-    }
-
-    private fun setupOrChangeLayout() {
-        if (sharedPreferences.layoutManager) {
-            binding.rvNotes.layoutManager = GridLayoutManager(requireContext(), 2)
-            binding.rvNotes.adapter = noteGridAdapter
-        } else {
-            binding.rvNotes.layoutManager = LinearLayoutManager(requireContext())
-            binding.rvNotes.adapter = noteListAdapter
-        }
-    }
-
 
 }

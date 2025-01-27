@@ -8,5 +8,5 @@ enum class ColorsEnum(val colorHex: String) {
     RED("#FF9E9E"),
     GREEN("#91F48F"),
     BLUE("#9EFFFF"),
-    DEFAULT("#191818")
+    DEFAULT("#424242")
 }

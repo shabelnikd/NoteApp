@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".ui.fragments.notes.AddNewNoteFragment">
+    tools:context=".ui.fragments.notes.AddOrChangeNoteFragment">
 
 
     <LinearLayout
@@ -23,6 +23,7 @@
             android:layout_height="32dp"
             android:background="@android:color/transparent"
             android:backgroundTint="#70FFFFFF"
+            android:padding="5dp"
             android:contentDescription="Button to cancel new note"
             android:src="@drawable/ic_cancel_arrow" />
 
@@ -50,11 +51,13 @@
 
         <ImageButton
             android:id="@+id/btnNoteContext"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:clickable="true"
-            android:src="@drawable/bg_btn_note_context_state" />
+            android:padding="5dp"
+            android:src="@drawable/bg_btn_note_context_state"
+            />
         
         
         <TextView
@@ -87,13 +90,14 @@
 
         <EditText
             android:id="@+id/etNoteTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@android:color/transparent"
             android:elegantTextHeight="true"
             android:fontFamily="@font/poppins_semi_bold"
-            android:hint="Title..."
+            android:hint="Заголовок"
+            android:paddingVertical="5dp"
             tools:text="Как стать русалкой"
             android:textColor="#70FFFFFF"
             android:textColorHint="#70FFFFFF"
@@ -109,18 +113,20 @@
         android:scrollbars="none"
         android:paddingHorizontal="20dp"
         android:clipToPadding="false"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
 
         <EditText
-            android:id="@+id/result"
+            android:id="@+id/etTextNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:paddingVertical="5dp"
             android:background="@android:color/transparent"
             android:elegantTextHeight="true"
             android:fontFamily="@font/poppins_semi_bold"
-            android:hint="Text"
+            android:hint="Введите текст"
             tools:text="Выпить воды из канализации\nУбить дракона\nУбраться дома"
             android:textColor="#70FFFFFF"
             android:textColorHint="#70FFFFFF"
