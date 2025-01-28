@@ -57,18 +57,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="94dp"
-        android:textColor="@color/black"
-
         android:layout_marginVertical="104dp"
+
         android:background="@drawable/bg_oauth_google"
         android:drawableStart="@drawable/logo_google_48dp"
-
         android:elegantTextHeight="true"
 
         android:paddingHorizontal="12dp"
-        android:text="Sign in with Google"
 
+        android:text="Sign in with Google"
         android:textAllCaps="false"
+
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"

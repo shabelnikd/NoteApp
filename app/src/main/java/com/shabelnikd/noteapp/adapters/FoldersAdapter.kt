@@ -23,7 +23,6 @@ class FoldersAdapter(
     }
 
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

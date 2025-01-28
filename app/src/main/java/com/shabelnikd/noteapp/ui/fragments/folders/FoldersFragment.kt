@@ -1,6 +1,5 @@
 package com.shabelnikd.noteapp.ui.fragments.folders
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -132,7 +131,8 @@ class FoldersFragment : Fragment() {
             }
 
             false -> { //false is DeleteFolder
-                val bindingDeleteFolder = AlertDeleteItemBinding.inflate(layoutInflater, null, false)
+                val bindingDeleteFolder =
+                    AlertDeleteItemBinding.inflate(layoutInflater, null, false)
                 val dialog = dialogView.setView(bindingDeleteFolder.root).create()
 
                 dialog.show()

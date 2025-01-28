@@ -3,18 +3,16 @@ package com.shabelnikd.noteapp.ui.fragments.auth
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.snackbar.Snackbar
-import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.databinding.FragmentAuthBinding
 import com.shabelnikd.noteapp.ui.activities.MainActivity
-import kotlinx.coroutines.launch
 
 
 class AuthFragment : Fragment() {

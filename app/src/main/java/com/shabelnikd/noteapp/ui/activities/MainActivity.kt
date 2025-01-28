@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.databinding.ActivityMainBinding
@@ -38,8 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         if (!sharedPreferences.isFirstLaunch && FirebaseAuth.getInstance().currentUser == null) {
             navGraph.setStartDestination(R.id.authFragment)
-        }
-        else if (!sharedPreferences.isFirstLaunch && FirebaseAuth.getInstance().currentUser != null) {
+        } else if (!sharedPreferences.isFirstLaunch && FirebaseAuth.getInstance().currentUser != null) {
             navGraph.setStartDestination(R.id.homeFragment)
         }
 

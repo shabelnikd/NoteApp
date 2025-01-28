@@ -2,17 +2,13 @@ package com.shabelnikd.noteapp.ui.fragments.onboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.OnBoardAdapter
 import com.shabelnikd.noteapp.databinding.FragmentOnBoardBinding
 import com.shabelnikd.noteapp.ui.activities.MainActivity

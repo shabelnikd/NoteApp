@@ -1,6 +1,5 @@
 package com.shabelnikd.noteapp.ui.fragments
 
-import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,10 +15,6 @@ import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.material.snackbar.Snackbar
 import com.shabelnikd.noteapp.Dependencies
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.NoteAdapter

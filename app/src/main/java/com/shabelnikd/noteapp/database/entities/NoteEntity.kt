@@ -1,6 +1,5 @@
 package com.shabelnikd.noteapp.database.entities
 
-import androidx.room.AutoMigration
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey

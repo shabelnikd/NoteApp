@@ -1,13 +1,11 @@
 package com.shabelnikd.noteapp.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Query
 import com.shabelnikd.noteapp.database.dao.NoteDao
 import com.shabelnikd.noteapp.database.entities.FolderEntity
 import com.shabelnikd.noteapp.database.entities.NoteEntity
 import com.shabelnikd.noteapp.database.tuples.FolderTuple
 import com.shabelnikd.noteapp.database.tuples.NoteTuple
-import com.shabelnikd.noteapp.models.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

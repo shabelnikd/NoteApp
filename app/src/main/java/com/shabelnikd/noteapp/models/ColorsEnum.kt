@@ -1,5 +1,4 @@
 package com.shabelnikd.noteapp.models
-import com.shabelnikd.noteapp.R
 
 enum class ColorsEnum(val colorHex: String) {
     YELLOW("#FFF599"),

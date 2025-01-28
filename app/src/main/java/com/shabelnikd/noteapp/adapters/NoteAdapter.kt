@@ -1,13 +1,11 @@
 package com.shabelnikd.noteapp.adapters
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.shabelnikd.noteapp.database.tuples.NoteTuple
 import com.shabelnikd.noteapp.databinding.ItemNoteGridBinding
 import com.shabelnikd.noteapp.databinding.ItemNoteListBinding
@@ -60,8 +58,13 @@ class NoteAdapter(
                     gridCard.setCardBackgroundColor(Color.parseColor(note.colorHex))
 
                     if (0xFFFFFF and gridCard.cardBackgroundColor.defaultColor
-                        != 0xFFFFFF and Color.parseColor(ColorsEnum.DEFAULT.colorHex)) {
-                        listOf(tvTitle, tvNoteText, tvNoteCreated).forEach { it.setTextColor(Color.BLACK) }
+                        != 0xFFFFFF and Color.parseColor(ColorsEnum.DEFAULT.colorHex)
+                    ) {
+                        listOf(
+                            tvTitle,
+                            tvNoteText,
+                            tvNoteCreated
+                        ).forEach { it.setTextColor(Color.BLACK) }
                     }
                 }
 
@@ -73,8 +76,13 @@ class NoteAdapter(
 
                     tvNoteCreated.text = note.createdAt.replace('|', ' ')
                     if (0xFFFFFF and listCard.cardBackgroundColor.defaultColor
-                        != 0xFFFFFF and Color.parseColor(ColorsEnum.DEFAULT.colorHex)) {
-                        listOf(tvTitle, tvNoteText, tvNoteCreated).forEach { it.setTextColor(Color.BLACK) }
+                        != 0xFFFFFF and Color.parseColor(ColorsEnum.DEFAULT.colorHex)
+                    ) {
+                        listOf(
+                            tvTitle,
+                            tvNoteText,
+                            tvNoteCreated
+                        ).forEach { it.setTextColor(Color.BLACK) }
                     }
                 }
             }

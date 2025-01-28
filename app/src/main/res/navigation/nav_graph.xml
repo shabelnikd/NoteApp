@@ -9,7 +9,7 @@
         android:id="@+id/onBoardFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.onboard.OnBoardFragment"
         android:label="fragment_on_board"
-        tools:layout="@layout/fragment_on_board"/>
+        tools:layout="@layout/fragment_on_board" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.HomeFragment"
@@ -23,21 +23,19 @@
             app:destination="@id/addOrChangeNoteFragment" />
         <action
             android:id="@+id/action_homeFragment_to_authFragment"
-            app:destination="@id/authFragment"
-            />
+            app:destination="@id/authFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/foldersFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.folders.FoldersFragment"
         android:label="fragment_folders"
-        tools:layout="@layout/fragment_folders">
-    </fragment>
+        tools:layout="@layout/fragment_folders"></fragment>
     <fragment
         android:id="@+id/addOrChangeNoteFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.notes.AddOrChangeNoteFragment"
         android:label="fragment_add_or_change_note"
-        tools:layout="@layout/fragment_add_or_change_note" >
+        tools:layout="@layout/fragment_add_or_change_note">
         <argument
             android:name="noteId"
             app:argType="long" />
@@ -46,10 +44,9 @@
         android:id="@+id/authFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.auth.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth" >
+        tools:layout="@layout/fragment_auth">
         <action
             android:id="@+id/action_authFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            />
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
