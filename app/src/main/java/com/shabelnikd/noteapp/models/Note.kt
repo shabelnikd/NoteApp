@@ -16,5 +16,6 @@ data class Note(
         title = title,
         colorHex = colorHex,
         createdAt = createdAt,
+        isNoteDeleted = false
     )
 }

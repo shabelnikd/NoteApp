@@ -12,9 +12,14 @@ class FoldersAdapter(
 ) : ListAdapter<FolderTuple, FoldersAdapter.ViewHolder>(FolderDiffCallback()) {
 
     private var onFolderClick: ((folderId: Long) -> Unit)? = null
+    private var onFolderLongClick: ((folderId: Long) -> Unit)? = null
 
     fun setOnFolderClickListener(listener: (folderId: Long) -> Unit) {
         this.onFolderClick = listener
+    }
+
+    fun setOnFolderLongClickListener(listener: (folderId: Long) -> Unit) {
+        this.onFolderLongClick = listener
     }
 
 
@@ -39,6 +44,11 @@ class FoldersAdapter(
             binding.btnFolder.setOnClickListener {
                 onFolderClick?.invoke(folder.id)
             }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onFolderLongClick?.invoke(folder.id)
+            true
         }
 
     }

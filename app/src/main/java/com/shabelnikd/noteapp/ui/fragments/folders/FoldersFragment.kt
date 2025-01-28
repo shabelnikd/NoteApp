@@ -5,20 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.liveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shabelnikd.noteapp.Dependencies
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.FoldersAdapter
-import com.shabelnikd.noteapp.database.tuples.FolderTuple
+import com.shabelnikd.noteapp.databinding.AlertAddFolderBinding
+import com.shabelnikd.noteapp.databinding.AlertDeleteItemBinding
 import com.shabelnikd.noteapp.databinding.FragmentFoldersBinding
 import com.shabelnikd.noteapp.models.Folder
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +26,12 @@ class FoldersFragment : Fragment() {
 
     private var _binding: FragmentFoldersBinding? = null
     private val binding get() = _binding!!
+
+//    private var _bindingAddFolder: AlertAddFolderBinding? = null
+//    private val bindingAddFolder get() = _bindingAddFolder!!
+
+//    private var _bindingDeleteFolder: AlertDeleteItemBinding? = null
+//    private val bindingDeleteFolder get() = _bindingDeleteFolder!!
 
     private val foldersAdapter = FoldersAdapter()
     private val viewModel: FolderViewModel by viewModels()
@@ -60,6 +63,10 @@ class FoldersFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        foldersAdapter.setOnFolderLongClickListener { folderId ->
+            showAlertNewFolderOrDelete(false, folderId)
+        }
+
         binding.rvFolders.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = foldersAdapter
@@ -79,42 +86,84 @@ class FoldersFragment : Fragment() {
     private fun setupListeners() {
         with(binding) {
             btnAddFolder.setOnClickListener {
-                showAlertNewFolder()
+                showAlertNewFolderOrDelete(true)
             }
 
         }
 
         binding.btnAllNotes.setOnClickListener {
-            viewModel.selectFolder(-1)
+            viewModel.selectFolder(-1L)
+            findNavController().popBackStack()
+        }
+
+        binding.btnDeletedNotes.setOnClickListener {
+            viewModel.selectFolder(-2L)
             findNavController().popBackStack()
         }
 
     }
 
-    @SuppressLint("InflateParams")
-    private fun showAlertNewFolder() {
+    private fun showAlertNewFolderOrDelete(state: Boolean, folderId: Long = -1L) {
         val dialogView = AlertDialog.Builder(requireContext())
-        val view = layoutInflater.inflate(R.layout.alert_add_folder, null)
-        val dialog = dialogView.setView(view).create()
 
-        dialog.show()
-        dialog.window?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
-        dialog.window?.container?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+        when (state) {
+            true -> { //true is Add Folder
+                val bindingAddFolder = AlertAddFolderBinding.inflate(layoutInflater, null, false)
 
-        view.findViewById<AppCompatButton>(R.id.btnNewFolder).setOnClickListener {
-            viewModel.insertNewFolder(
-                Folder(view.findViewById<EditText>(R.id.etNewFolderName).text.toString())
-                    .toFolderEntity()
-            )
+                val dialog = dialogView.setView(bindingAddFolder.root).create()
 
-            dialog.dismiss()
+                dialog.show()
 
+                with(bindingAddFolder) {
+                    btnNewFolder.setOnClickListener {
+                        viewModel.insertNewFolder(
+                            Folder(etNewFolderName.text.toString())
+                                .toFolderEntity()
+                        )
+                        dialog.dismiss()
+                    }
+
+                    btnNewFolderCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                }
+                dialog.window?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+                dialog.window?.container?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+            }
+
+            false -> { //false is DeleteFolder
+                val bindingDeleteFolder = AlertDeleteItemBinding.inflate(layoutInflater, null, false)
+                val dialog = dialogView.setView(bindingDeleteFolder.root).create()
+
+                dialog.show()
+
+                with(bindingDeleteFolder) {
+                    tvAlertFolderOrNoteName.text = "Удалить папку?"
+
+                    btnDeleteFolderOrNote.setOnClickListener {
+                        viewModel.currentFolderId.observe(viewLifecycleOwner) { currentFolderId ->
+                            if (folderId == currentFolderId) viewModel.selectFolder(-1L)
+                        }
+                        if (folderId != -1L) viewModel.deleteFolder(folderId)
+
+                        dialog.dismiss()
+                    }
+
+                    btnDeleteFolderOrNoteCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                }
+                dialog.window?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+                dialog.window?.container?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+            }
         }
 
-        view.findViewById<AppCompatButton>(R.id.btnNewFolderCancel).setOnClickListener {
-            dialog.dismiss()
-        }
+
+    }
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -1,5 +1,6 @@
 package com.shabelnikd.noteapp.ui.fragments.onboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.OnBoardAdapter
 import com.shabelnikd.noteapp.databinding.FragmentOnBoardBinding
+import com.shabelnikd.noteapp.ui.activities.MainActivity
 import com.shabelnikd.noteapp.utils.PreferenceHelper
 
 class OnBoardFragment : Fragment() {
@@ -99,12 +101,9 @@ class OnBoardFragment : Fragment() {
 
         binding.btnStart.setOnClickListener {
             sharedPreferences.isFirstLaunch = false
-
-            findNavController().navigate(
-                R.id.homeFragment, null,
-                NavOptions.Builder().setPopUpTo(R.id.nav_graph, true)
-                    .build()
-            )
+            activity?.finish()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -2,7 +2,6 @@ package com.shabelnikd.noteapp.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,17 +18,35 @@ interface NoteDao {
     fun insertNewNote(note: NoteEntity)
 
     @Query(
-        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt FROM notes"
+        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt, isNoteDeleted FROM notes WHERE isNoteDeleted = 0"
     )
     fun getAllNotes(): LiveData<List<NoteTuple>>
 
+    @Query(
+        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt, isNoteDeleted FROM notes WHERE isNoteDeleted = 1"
+    )
+    fun getAllDeletedNotes(): LiveData<List<NoteTuple>>
 
     @Query("DELETE FROM notes WHERE id = :noteId")
     fun deleteNoteById(noteId: Long)
 
+    @Query("DELETE FROM folders WHERE id = :folderId")
+    fun deleteFolderById(folderId: Long)
+
+    @Query("UPDATE notes SET isNoteDeleted = 1 WHERE id =:noteId")
+    fun softDeleteNoteById(noteId: Long)
+
+    @Query("UPDATE notes SET isNoteDeleted = 0 WHERE id =:noteId")
+    fun restoreNoteById(noteId: Long)
+
+    @Query("UPDATE notes SET colorHex = :colorHex WHERE id =:noteId")
+    fun changeColorById(noteId: Long, colorHex: String)
 
     @Insert(entity = FolderEntity::class)
     fun insertNewFolder(folder: FolderEntity)
+
+    @Update(entity = NoteEntity::class, onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun updateNote(note: NoteTuple)
 
 
     @Query(
@@ -39,25 +56,17 @@ interface NoteDao {
 
 
     @Query(
-        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt FROM notes " +
-                "WHERE notes.folder_id = :folderId"
+        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt, isNoteDeleted FROM notes " +
+                "WHERE notes.folder_id = :folderId AND isNoteDeleted = 0"
     )
     fun getNotesByFolderId(folderId: Long): LiveData<List<NoteTuple>>
 
     @Query(
-        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt FROM notes " +
+        "SELECT notes.id, notes.folder_id, title, text, colorHex, createdAt, isNoteDeleted FROM notes " +
                 "WHERE notes.id = :noteId"
     )
     fun getNoteById(noteId: Long): LiveData<NoteTuple>
 
-    @Update(entity = NoteEntity::class, onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun updateNote(note: NoteTuple)
-
-    @Delete(entity = NoteEntity::class)
-    fun deleteNote(note: NoteTuple)
-
-    @Delete(entity = FolderEntity::class)
-    fun deleteFolder(folder: FolderTuple)
 
     @Query(
         "SELECT folders.id, folder_name FROM folders WHERE folders.id = :folderId"

@@ -23,8 +23,8 @@
             android:layout_height="32dp"
             android:background="@android:color/transparent"
             android:backgroundTint="#70FFFFFF"
-            android:padding="5dp"
             android:contentDescription="Button to cancel new note"
+            android:padding="5dp"
             android:src="@drawable/ic_cancel_arrow" />
 
         <TextView
@@ -56,22 +56,23 @@
             android:background="@android:color/transparent"
             android:clickable="true"
             android:padding="5dp"
-            android:src="@drawable/bg_btn_note_context_state"
-            />
-        
-        
-        <TextView
-            android:id="@+id/tvSaveNoteClickable"
+            android:src="@drawable/bg_btn_note_context_state" />
+
+
+        <ImageButton
+            android:id="@+id/btnSaveNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:text="Готово"
-            android:visibility="gone"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
-            android:textColor="#D88B02"
-            android:elegantTextHeight="true"
-            />
+            android:background="@android:color/transparent"
+
+            android:fontFamily="@font/poppins_semi_bold"
+            android:padding="5dp"
+
+            android:src="@drawable/ic_check_active"
+            android:text="Готово"
+            android:textSize="15sp" />
 
 
     </LinearLayout>
@@ -81,9 +82,9 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintTop_toBottomOf="@id/llNoteTopBar">
@@ -98,10 +99,10 @@
             android:fontFamily="@font/poppins_semi_bold"
             android:hint="Заголовок"
             android:paddingVertical="5dp"
-            tools:text="Как стать русалкой"
-            android:textColor="#70FFFFFF"
+            android:textColor="#99FFFFFF"
             android:textColorHint="#70FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:text="Как стать русалкой" />
 
     </HorizontalScrollView>
 
@@ -110,10 +111,10 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scrollbars="none"
-        android:paddingHorizontal="20dp"
-        android:clipToPadding="false"
         android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
 
@@ -122,15 +123,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:paddingVertical="5dp"
             android:background="@android:color/transparent"
             android:elegantTextHeight="true"
             android:fontFamily="@font/poppins_semi_bold"
             android:hint="Введите текст"
-            tools:text="Выпить воды из канализации\nУбить дракона\nУбраться дома"
-            android:textColor="#70FFFFFF"
+            android:paddingVertical="5dp"
+            android:textColor="#99FFFFFF"
             android:textColorHint="#70FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="Выпить воды из канализации\nУбить дракона\nУбраться дома" />
     </ScrollView>
 
 

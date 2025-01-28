@@ -9,4 +9,5 @@ data class NoteTuple(
     val text: String,
     val colorHex: String,
     val createdAt: String,
+    val isNoteDeleted: Boolean
 )

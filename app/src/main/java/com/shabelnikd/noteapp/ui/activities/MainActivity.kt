@@ -7,6 +7,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.databinding.ActivityMainBinding
 import com.shabelnikd.noteapp.utils.PreferenceHelper
@@ -34,7 +36,10 @@ class MainActivity : AppCompatActivity() {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(R.navigation.nav_graph)
 
-        if (!sharedPreferences.isFirstLaunch) {
+        if (!sharedPreferences.isFirstLaunch && FirebaseAuth.getInstance().currentUser == null) {
+            navGraph.setStartDestination(R.id.authFragment)
+        }
+        else if (!sharedPreferences.isFirstLaunch && FirebaseAuth.getInstance().currentUser != null) {
             navGraph.setStartDestination(R.id.homeFragment)
         }
 

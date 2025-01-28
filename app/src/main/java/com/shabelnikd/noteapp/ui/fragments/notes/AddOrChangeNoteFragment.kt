@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +43,8 @@ class AddOrChangeNoteFragment : Fragment() {
     private var etTitleFilled = false
     private var etTextFilled = false
 
+    private var ongoingPopUp: PopupWindow? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +58,7 @@ class AddOrChangeNoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvSaveNoteClickable.visibility = View.GONE
+        binding.btnSaveNote.visibility = View.GONE
         binding.btnNoteContext.isActivated = false
 
         initialize()
@@ -72,7 +76,6 @@ class AddOrChangeNoteFragment : Fragment() {
         }
 
 
-
         viewModel.currentFolderId.observe(viewLifecycleOwner) { folderId ->
             val currentDate = getCurrentDateTime().substringBeforeLast('|')
             val currentTime = getCurrentDateTime().substringAfterLast('|')
@@ -82,12 +85,12 @@ class AddOrChangeNoteFragment : Fragment() {
                     binding.tvNoteDateDay.text = currentDate
                     binding.tvNoteDateTime.text = currentTime
 
-                    binding.tvSaveNoteClickable.setOnClickListener {
+                    binding.btnSaveNote.setOnClickListener {
                         viewModel.insertNote(
                             Note(
                                 title = binding.etNoteTitle.text.toString(),
                                 text = binding.etTextNote.text.toString(),
-                                colorHex = ColorsEnum.DEFAULT.colorHex,
+                                colorHex = searchSelected(),
                                 folderId = if (folderId == -1L) null else folderId,
                                 createdAt = getCurrentDateTime()
                             ).toNoteEntity()
@@ -101,24 +104,30 @@ class AddOrChangeNoteFragment : Fragment() {
                         with(Dependencies.noteRepository) {
                             getNoteById(args.noteId).observe(viewLifecycleOwner) { note ->
                                 selectColor(note.colorHex)
+                                bindingPopup.btnResetColor.setOnClickListener {
+                                    viewModel.changeColor(note.id, ColorsEnum.DEFAULT.colorHex)
+                                    selectColor(ColorsEnum.DEFAULT.colorHex, false)
+                                }
 
-                                binding.etNoteTitle.setText(note.title)
-                                binding.etTextNote.setText(note.text)
+                                with(binding) {
+                                    etNoteTitle.setText(note.title)
+                                    etTextNote.setText(note.text)
 
-                                binding.tvNoteDateDay.text = note.createdAt.substringBeforeLast('|')
-                                binding.tvNoteDateTime.text = note.createdAt.substringAfterLast('|')
+                                    tvNoteDateDay.text = note.createdAt.substringBeforeLast('|')
+                                    tvNoteDateTime.text = note.createdAt.substringAfterLast('|')
 
-                                binding.tvSaveNoteClickable.setOnClickListener {
-                                    lifecycleScope.launch {
-                                        val noteChanged = NoteTuple(
+                                    btnSaveNote.setOnClickListener {
+                                        val changedNote = NoteTuple(
                                             id = note.id,
-                                            title = binding.etNoteTitle.text.toString(),
-                                            text = binding.etTextNote.text.toString(),
-                                            colorHex = searchSelected(),
                                             folderId = if (folderId == -1L) null else folderId,
-                                            createdAt = getCurrentDateTime()
+                                            title = etNoteTitle.text.toString(),
+                                            text = etTextNote.text.toString(),
+                                            colorHex = searchSelected(),
+                                            createdAt = note.createdAt,
+                                            isNoteDeleted = false
                                         )
-                                        Dependencies.noteRepository.updateNote(noteChanged)
+
+                                        viewModel.updateNote(note, changedNote)
                                         findNavController().popBackStack()
                                     }
                                 }
@@ -154,10 +163,10 @@ class AddOrChangeNoteFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 changeState(!s.isNullOrEmpty())
                 if (etTextFilled && etTitleFilled) {
-                    binding.tvSaveNoteClickable.visibility = View.VISIBLE
+                    binding.btnSaveNote.visibility = View.VISIBLE
                     binding.btnNoteContext.isActivated = true
                 } else {
-                    binding.tvSaveNoteClickable.visibility = View.GONE
+                    binding.btnSaveNote.visibility = View.GONE
                     binding.btnNoteContext.isActivated = false
                 }
             }
@@ -174,60 +183,66 @@ class AddOrChangeNoteFragment : Fragment() {
     private fun setupPopUp() = with(bindingPopup) {
         listBtnColor().forEach { btn ->
             btn.setOnClickListener {
+                listBtnColor().forEach { otherButton ->
+                    otherButton.isSelected = false
+                }
                 btn.isSelected = true
             }
         }
     }
 
-    private fun selectColor(noteColor: String) = with(bindingPopup) {
-        listBtnColor().filter {
-            (0xFFFFFF and (it.backgroundTintList?.defaultColor
-                ?: Color.WHITE )) == (0xFFFFFF and Color.parseColor(noteColor))
-        }.first().isSelected = true
+    private fun selectColor(noteColor: String, state: Boolean = true) = with(bindingPopup) {
+        when (state) {
+            true -> {
+                listBtnColor().filter {
+                    (0xFFFFFF and (it.cardBackgroundColor.defaultColor)) == 0xFFFFFF and (Color.parseColor(
+                        noteColor
+                    ))
+                }.firstOrNull()?.isSelected = true
+            }
+
+            false -> {
+                listBtnColor().forEach {
+                    it.isSelected = false
+                }
+            }
+        }
+
+
     }
 
     private fun searchSelected() = with(bindingPopup) {
-        val color = listBtnColor().filter { it.isSelected }.first().backgroundTintList?.defaultColor ?: Color.WHITE
+        val color =
+            listBtnColor().filter { it.isSelected }.firstOrNull()?.cardBackgroundColor?.defaultColor
+                ?: Color.parseColor(ColorsEnum.DEFAULT.colorHex)
+
         return@with String.format("#%06X", (0xFFFFFF and color))
     }
 
     private fun showPopup(view: View) {
-        val displayMetrics = resources.displayMetrics
-
         val widthInPx = 152
-        val heightInPx = 174
+        val heightInPx = 145
+        val marginInPx = 10
 
-        val widthInDp = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            widthInPx.toFloat(),
-            displayMetrics
-        ).toInt()
+        val pxToDp = fun(px: Int): Int {
+            return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                px.toFloat(),
+                resources.displayMetrics
+            ).toInt()
+        }
 
-        val heightInDp = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            heightInPx.toFloat(),
-            displayMetrics
-        ).toInt()
-
-        val popUpWindow = PopupWindow(
+        ongoingPopUp = PopupWindow(
             bindingPopup.root,
-            widthInDp,
-            heightInDp,
+            pxToDp(widthInPx),
+            pxToDp(heightInPx),
             true
         )
 
-
-        val marginInPx = 10
-        val marginInDp = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            marginInPx.toFloat(),
-            displayMetrics
-        ).toInt()
-
         val viewWidth = view.width
-        val offsetX = viewWidth - widthInDp - marginInDp
+        val offsetX = viewWidth - pxToDp(widthInPx) - pxToDp(marginInPx)
 
-        popUpWindow.showAsDropDown(view, offsetX, 0)
+        ongoingPopUp?.showAsDropDown(view, offsetX, 0)
     }
 
 
@@ -240,6 +255,8 @@ class AddOrChangeNoteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        ongoingPopUp = null
+        _bindingPopup = null
     }
 
 }

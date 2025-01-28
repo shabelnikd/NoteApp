@@ -1,11 +1,13 @@
 package com.shabelnikd.noteapp.database
 
 import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.shabelnikd.noteapp.database.dao.NoteDao
 import com.shabelnikd.noteapp.database.entities.FolderEntity
 import com.shabelnikd.noteapp.database.entities.NoteEntity
 import com.shabelnikd.noteapp.database.tuples.FolderTuple
 import com.shabelnikd.noteapp.database.tuples.NoteTuple
+import com.shabelnikd.noteapp.models.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,12 +24,42 @@ class NoteRepository(private val noteDao: NoteDao) {
         }
     }
 
+    suspend fun getAllDeletedNotes(): LiveData<List<NoteTuple>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext noteDao.getAllDeletedNotes()
+        }
+    }
+
+
+    suspend fun softDeleteNoteById(noteId: Long) {
+        withContext(Dispatchers.IO) {
+            noteDao.softDeleteNoteById(noteId)
+        }
+    }
+
+    suspend fun restoreNoteById(noteId: Long) {
+        withContext(Dispatchers.IO) {
+            noteDao.restoreNoteById(noteId)
+        }
+    }
+
+    suspend fun changeColorById(noteId: Long, colorHex: String) {
+        withContext(Dispatchers.IO) {
+            noteDao.changeColorById(noteId, colorHex)
+        }
+    }
+
     suspend fun deleteNoteById(noteId: Long) {
         withContext(Dispatchers.IO) {
             noteDao.deleteNoteById(noteId)
         }
     }
 
+    suspend fun deleteFolderById(folderId: Long) {
+        withContext(Dispatchers.IO) {
+            noteDao.deleteFolderById(folderId)
+        }
+    }
 
     suspend fun insertNewFolder(folderEntity: FolderEntity) {
         withContext(Dispatchers.IO) {
@@ -59,7 +91,7 @@ class NoteRepository(private val noteDao: NoteDao) {
         }
     }
 
-    suspend fun getFolderById(folderId: Long): LiveData<FolderTuple>  {
+    suspend fun getFolderById(folderId: Long): LiveData<FolderTuple> {
         return withContext(Dispatchers.IO) {
             return@withContext noteDao.getFolderById(folderId)
         }

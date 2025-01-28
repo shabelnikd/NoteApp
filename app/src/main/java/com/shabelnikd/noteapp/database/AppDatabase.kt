@@ -8,11 +8,14 @@ import com.shabelnikd.noteapp.database.entities.FolderEntity
 import com.shabelnikd.noteapp.database.entities.NoteEntity
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [
         FolderEntity::class,
         NoteEntity::class
     ],
+    autoMigrations = [
+        AutoMigration (from = 1, to = 2)
+    ]
 )
 
 abstract class AppDatabase : RoomDatabase() {

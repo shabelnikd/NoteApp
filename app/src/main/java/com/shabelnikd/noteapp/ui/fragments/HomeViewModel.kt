@@ -22,4 +22,22 @@ class HomeViewModel @Inject constructor(
 
     val currentFolderId: LiveData<Long> = folderService.currentFolderId.asLiveData()
 
+    fun deleteNote(noteId: Long) {
+        viewModelScope.launch {
+            Dependencies.noteRepository.deleteNoteById(noteId)
+        }
+    }
+
+    fun restoreNote(noteId: Long) {
+        viewModelScope.launch {
+            Dependencies.noteRepository.restoreNoteById(noteId)
+        }
+    }
+
+    fun softDeleteNote(noteId: Long) {
+        viewModelScope.launch {
+            Dependencies.noteRepository.softDeleteNoteById(noteId)
+        }
+    }
+
 }

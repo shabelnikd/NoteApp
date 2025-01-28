@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -19,10 +20,11 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.shabelnikd.noteapp.Dependencies
+import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.adapters.NoteAdapter
 import com.shabelnikd.noteapp.database.tuples.NoteTuple
+import com.shabelnikd.noteapp.databinding.AlertDeleteItemBinding
 import com.shabelnikd.noteapp.databinding.FragmentHomeBinding
 import com.shabelnikd.noteapp.utils.PreferenceHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,14 +38,11 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val signInLauncher = registerForActivityResult(
-        FirebaseAuthUIActivityResultContract(),
-    ) { res ->
-        this.onSignInResult(res)
-    }
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+//    private var _bindingDeleteNote: AlertDeleteItemBinding? = null
+//    private val bindingDeleteNote get() = _bindingDeleteNote!!
 
     private val noteGridAdapter = NoteAdapter(true)
     private val noteListAdapter = NoteAdapter(false)
@@ -66,37 +65,62 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (FirebaseAuth.getInstance().currentUser == null) createSignInIntent()
         setupOrChangeLayout()
         checkData()
         setupListeners()
+
+
     }
 
 
     private fun setupOrChangeLayout() {
         when (sharedPreferences.layoutManager) {
-            true -> {
-                noteGridAdapter.setOnNoteClickListener { noteId ->
-                    navigateToChangeNote(noteId)
+            true -> with(binding) {
+                noteGridAdapter.apply {
+                    setOnNoteClickListener { noteId ->
+                        navigateToChangeNote(noteId)
+                    }
+
+                    setOnLongNoteClickListener { noteId ->
+                        showAlertNewFolderOrDeleteOrRestore(noteId)
+                    }
                 }
-                binding.rvNotes.layoutManager = GridLayoutManager(requireContext(), 2)
-                binding.rvNotes.adapter = noteGridAdapter
-                binding.layoutChanger.isActivated = sharedPreferences.layoutManager
+
+                rvNotes.apply {
+                    layoutManager = GridLayoutManager(requireContext(), 2)
+                    adapter = noteGridAdapter
+                }
+
+                layoutChanger.isActivated = sharedPreferences.layoutManager
             }
 
-            false -> {
-                noteListAdapter.setOnNoteClickListener { noteId ->
-                    navigateToChangeNote(noteId)
+            false -> with(binding) {
+                noteListAdapter.apply {
+                    setOnNoteClickListener { noteId ->
+                        navigateToChangeNote(noteId)
+                    }
+
+                    setOnLongNoteClickListener { noteId ->
+                        showAlertNewFolderOrDeleteOrRestore(noteId)
+                    }
                 }
-                binding.rvNotes.layoutManager = LinearLayoutManager(requireContext())
-                binding.rvNotes.adapter = noteListAdapter
-                binding.layoutChanger.isActivated = sharedPreferences.layoutManager
+
+                rvNotes.apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = noteListAdapter
+                }
+
+                layoutChanger.isActivated = sharedPreferences.layoutManager
             }
         }
     }
 
     private fun checkData(query: String = "") {
         binding.tvNotes.text = ""
+
+        val updateData = fun(list: List<NoteTuple>) {
+            noteGridAdapter.submitList(list); noteListAdapter.submitList(list)
+        }
 
         viewModel.currentFolderId.observe(viewLifecycleOwner) { folderId ->
             when (folderId) {
@@ -106,11 +130,37 @@ class HomeFragment : Fragment() {
                         filterByEditText(
                             Dependencies.noteRepository.getAllNotes(), query
                         ).observe(viewLifecycleOwner) { notes ->
-                            noteListAdapter.submitList(notes)
-                            noteGridAdapter.submitList(notes)
+                            updateData(notes.reversed())
                         }
                     }
 
+                }
+
+                -2L -> {
+                    lifecycleScope.launch {
+                        binding.tvNotes.text = "Недавно удаленные"
+                        filterByEditText(
+                            Dependencies.noteRepository.getAllDeletedNotes(), query
+                        ).observe(viewLifecycleOwner) { deletedNotes ->
+                            updateData(deletedNotes.reversed())
+                            noteListAdapter.setOnLongNoteClickListener { noteId ->
+                                showAlertNewFolderOrDeleteOrRestore(noteId, true)
+                            }
+
+                            noteGridAdapter.setOnLongNoteClickListener { noteId ->
+                                showAlertNewFolderOrDeleteOrRestore(noteId, true)
+                            }
+
+                            noteListAdapter.setOnNoteClickListener { noteId ->
+                                showAlertNewFolderOrDeleteOrRestore(noteId, true)
+                            }
+
+                            noteGridAdapter.setOnNoteClickListener { noteId ->
+                                showAlertNewFolderOrDeleteOrRestore(noteId, true)
+                            }
+                        }
+
+                    }
                 }
 
                 else -> {
@@ -123,8 +173,7 @@ class HomeFragment : Fragment() {
                         filterByEditText(
                             Dependencies.noteRepository.getNotesByFolderId(folderId), query
                         ).observe(viewLifecycleOwner) { notes ->
-                            noteListAdapter.submitList(notes)
-                            noteGridAdapter.submitList(notes)
+                            updateData(notes.reversed())
                         }
                     }
 
@@ -139,6 +188,7 @@ class HomeFragment : Fragment() {
     ): LiveData<List<NoteTuple>> {
         return when (searchText.isEmpty()) {
             true -> notesList
+
             false -> notesList.map { notes ->
                 notes.filter { note ->
                     note.text.contains(
@@ -195,26 +245,60 @@ class HomeFragment : Fragment() {
         )
     }
 
+    private fun showAlertNewFolderOrDeleteOrRestore(noteId: Long = -1L, state: Boolean = false) {
+        val bindingDeleteNote = AlertDeleteItemBinding.inflate(layoutInflater, null, false)
+        val dialogView = AlertDialog.Builder(requireContext())
 
-    private fun createSignInIntent() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.GoogleBuilder().build(),
-        )
+        val dialog = dialogView.setView(bindingDeleteNote.root).create()
 
-        val signInIntent =
-            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
-                .build()
-        signInLauncher.launch(signInIntent)
+
+        dialog.show()
+
+        when (state) {
+            false -> {
+                with(bindingDeleteNote) {
+                    tvAlertFolderOrNoteName.text = "Удалить заметку?"
+                    btnDeleteFolderOrNote.setOnClickListener {
+                        if (noteId != -1L) viewModel.softDeleteNote(noteId)
+                        dialog.dismiss()
+                    }
+
+                    btnDeleteFolderOrNoteCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                }
+            }
+
+            true -> {
+                with(bindingDeleteNote) {
+                    tvAlertFolderOrNoteName.text = "Восстановить заметку?"
+                    btnDeleteFolderOrNote.text = "Восстановить"
+                    btnDeleteFolderOrNoteCancel.text = "Удалить"
+
+                    btnDeleteFolderOrNote.setOnClickListener {
+                        if (noteId != -1L) viewModel.restoreNote(noteId)
+                        dialog.dismiss()
+                    }
+
+                    btnDeleteFolderOrNoteCancel.setOnClickListener {
+                        if (noteId != -1L) viewModel.deleteNote(noteId)
+                        dialog.dismiss()
+                    }
+                }
+            }
+        }
+
+
+        dialog.window?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+        dialog.window?.container?.setBackgroundDrawableResource(R.color.bg_alert_dialog)
+
+
     }
 
 
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
-        if (result.resultCode == RESULT_OK) {
-            Snackbar.make(binding.root, "Ваша аккаунт ${response?.email}", 1000).show()
-        } else {
-            Snackbar.make(binding.root, "Неудачная попытка", 1000).show()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

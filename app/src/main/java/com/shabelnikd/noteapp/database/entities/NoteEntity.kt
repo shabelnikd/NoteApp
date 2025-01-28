@@ -15,7 +15,9 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = FolderEntity::class,
             parentColumns = ["id"],
-            childColumns = ["folder_id"]
+            childColumns = ["folder_id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 
@@ -27,4 +29,5 @@ data class NoteEntity(
     val text: String,
     @ColumnInfo(defaultValue = "#424242") val colorHex: String = "#424242",
     val createdAt: String,
+    @ColumnInfo(defaultValue = "false") val isNoteDeleted: Boolean
 )
