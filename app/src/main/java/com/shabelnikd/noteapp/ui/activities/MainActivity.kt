@@ -1,11 +1,21 @@
 package com.shabelnikd.noteapp.ui.activities
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.OnSwipe
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.shabelnikd.noteapp.R
 import com.shabelnikd.noteapp.databinding.ActivityMainBinding
@@ -41,11 +51,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         navHostFragment.navController.graph = navGraph
+        binding.navView.setupWithNavController(navHostFragment.navController)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+    }
+
+    fun openDrawer() {
+        val drawerLayout: DrawerLayout = binding.root
+        drawerLayout.openDrawer(GravityCompat.START)
     }
 }

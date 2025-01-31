@@ -17,6 +17,7 @@ import com.shabelnikd.noteapp.databinding.AlertAddFolderBinding
 import com.shabelnikd.noteapp.databinding.AlertDeleteItemBinding
 import com.shabelnikd.noteapp.databinding.FragmentFoldersBinding
 import com.shabelnikd.noteapp.models.Folder
+import com.shabelnikd.noteapp.ui.activities.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -88,6 +89,9 @@ class FoldersFragment : Fragment() {
                 showAlertNewFolderOrDelete(true)
             }
 
+        }
+        binding.btnOpenDrawer.setOnClickListener {
+            (activity as? MainActivity)?.openDrawer()
         }
 
         binding.btnAllNotes.setOnClickListener {

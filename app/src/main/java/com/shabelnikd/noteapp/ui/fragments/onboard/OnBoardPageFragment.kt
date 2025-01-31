@@ -1,6 +1,7 @@
 package com.shabelnikd.noteapp.ui.fragments.onboard
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,10 +64,18 @@ class OnBoardPageFragment : Fragment() {
             override fun onGlobalLayout() {
                 viewTreeObserver.removeOnGlobalLayoutListener(this)
 
+                val pxToDp = fun(px: Int): Int {
+                    return TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        px.toFloat(),
+                        resources.displayMetrics
+                    ).toInt()
+                }
+
                 val location = IntArray(2)
                 binding.tvOnBoardDetail.getLocationOnScreen(location)
 
-                val y = location[1] + binding.tvOnBoardDetail.height - 40
+                val y = location[1] + binding.tvOnBoardDetail.height + pxToDp(40)
 
                 val dotsIndicatorNewY = y
                 val dotsIndicator =

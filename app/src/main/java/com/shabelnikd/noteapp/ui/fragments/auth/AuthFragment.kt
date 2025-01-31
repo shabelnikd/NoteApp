@@ -11,6 +11,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.shabelnikd.noteapp.databinding.FragmentAuthBinding
 import com.shabelnikd.noteapp.ui.activities.MainActivity
 
@@ -36,8 +37,18 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            binding.btnGoogleAuth.text = "Выйти из аккаунта"
+        }
+
         binding.btnGoogleAuth.setOnClickListener {
-            createSignInIntent()
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                FirebaseAuth.getInstance().signOut()
+                activity?.finish()
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+            } else {
+                createSignInIntent()
+            }
         }
     }
 
@@ -59,8 +70,7 @@ class AuthFragment : Fragment() {
         if (result.resultCode == RESULT_OK) {
             Snackbar.make(binding.root, "Ваш аккаунт ${response?.email}", 1000).show()
             activity?.finish()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), MainActivity::class.java))
         } else {
             Snackbar.make(binding.root, "Неудачная попытка", 1000).show()
         }

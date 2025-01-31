@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:title="Заметки"
+        android:icon="@drawable/ic_home"
+        />
+
+    <item
+        android:id="@+id/foldersFragment"
+        android:title="Папки"
+        android:icon="@drawable/ic_folder_data"
+        />
+
+    <item
+        android:id="@+id/onBoardFragment"
+        android:title="On Board"
+        android:icon="@drawable/ic_waving_hand"
+        />
+
+    <item
+        android:id="@+id/authFragment"
+        android:title="Аутентификация"
+        android:icon="@drawable/ic_login"
+        />
+
+    <item
+        android:title="Чат"
+        android:icon="@drawable/ic_chat"
+        />
+
+</menu>
