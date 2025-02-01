@@ -16,19 +16,10 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_foldersFragment"
-            app:destination="@id/foldersFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            />
-        <action
             android:id="@+id/action_homeFragment_to_addOrChangeNoteFragment"
             app:destination="@id/addOrChangeNoteFragment"
             app:enterAnim="@anim/slide_in_right"
             app:popEnterAnim="@anim/slide_in_left" />
-        <action
-            android:id="@+id/action_homeFragment_to_authFragment"
-            app:destination="@id/authFragment" />
     </fragment>
 
     <fragment
@@ -52,9 +43,10 @@
         android:id="@+id/authFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.auth.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth">
-        <action
-            android:id="@+id/action_authFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_auth"/>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

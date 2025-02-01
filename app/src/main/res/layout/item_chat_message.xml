@@ -7,6 +7,7 @@
     android:layout_marginVertical="8dp"
     android:layout_marginEnd="2dp"
     android:gravity="end"
+    android:layout_gravity="bottom"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
@@ -22,18 +23,40 @@
 
 
             <TextView
+                android:id="@+id/tvMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="300dp"
-                android:minWidth="300dp"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:maxWidth="290dp"
+
+
+                android:textAlignment="textStart"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:elegantTextHeight="true"
+                android:includeFontPadding="false"
                 android:textColor="#80FFFFFF"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvTime"
+                tools:text="Лол" />
 
-                tools:text="Какое то рандомное сообщение" />
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:textAlignment="textEnd"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="4dp"
+                android:textColor="#40FFFFFF"
+                android:elegantTextHeight="true"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvMessage"
+
+                tools:text="02:48" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

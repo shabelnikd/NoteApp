@@ -27,6 +27,7 @@
     <item
         android:title="Чат"
         android:icon="@drawable/ic_chat"
+        android:id="@+id/chatFragment"
         />
 
 </menu>

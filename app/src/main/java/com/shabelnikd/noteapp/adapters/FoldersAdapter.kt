@@ -9,7 +9,7 @@ import com.shabelnikd.noteapp.database.tuples.FolderTuple
 import com.shabelnikd.noteapp.databinding.ItemFolderBinding
 
 class FoldersAdapter(
-) : ListAdapter<FolderTuple, FoldersAdapter.ViewHolder>(FolderDiffCallback()) {
+) : ListAdapter<FolderTuple, FoldersAdapter.ViewHolder>(GenericDiffUtil<FolderTuple>()) {
 
     private var onFolderClick: ((folderId: Long) -> Unit)? = null
     private var onFolderLongClick: ((folderId: Long) -> Unit)? = null
@@ -53,21 +53,5 @@ class FoldersAdapter(
     }
 
     class ViewHolder(val binding: ItemFolderBinding) : RecyclerView.ViewHolder(binding.root)
-
-    class FolderDiffCallback : DiffUtil.ItemCallback<FolderTuple>() {
-        override fun areItemsTheSame(
-            oldItem: FolderTuple,
-            newItem: FolderTuple
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: FolderTuple,
-            newItem: FolderTuple
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
 
 }

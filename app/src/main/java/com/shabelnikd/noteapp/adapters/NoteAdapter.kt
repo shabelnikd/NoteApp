@@ -13,7 +13,7 @@ import com.shabelnikd.noteapp.models.ColorsEnum
 
 class NoteAdapter(
     val layoutManager: Boolean
-) : ListAdapter<NoteTuple, NoteAdapter.ViewHolder>(NoteDiffCallback()) {
+) : ListAdapter<NoteTuple, NoteAdapter.ViewHolder>(GenericDiffUtil<NoteTuple>()) {
 
     private var onNoteClick: ((noteId: Long) -> Unit)? = null
     private var onLongNoteClick: ((noteId: Long) -> Unit)? = null
@@ -112,21 +112,4 @@ class NoteAdapter(
                 bindingList.root
             }
         )
-
-    class NoteDiffCallback : DiffUtil.ItemCallback<NoteTuple>() {
-        override fun areItemsTheSame(
-            oldItem: NoteTuple,
-            newItem: NoteTuple
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: NoteTuple,
-            newItem: NoteTuple
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
-
 }

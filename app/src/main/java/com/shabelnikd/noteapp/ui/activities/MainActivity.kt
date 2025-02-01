@@ -54,8 +54,9 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navHostFragment.navController)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom + imeInsets.bottom)
             insets
         }
 
