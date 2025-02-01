@@ -3,23 +3,26 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
+    id("androidx.room")
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.shabelnikd.noteapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.shabelnikd.noteapp"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -43,6 +46,14 @@ android {
         viewBinding = true
     }
 
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
+    hilt {
+        enableAggregatingTask = true
+    }
+
 }
 
 dependencies {
@@ -53,6 +64,10 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -63,7 +78,6 @@ dependencies {
 
     //Room
     implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
@@ -73,7 +87,8 @@ dependencies {
     //Lottie
     implementation(libs.lottie)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    //Firebase Auth/Store
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
@@ -81,5 +96,10 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.androidx.datastore.preferences)
 
+    //Hilt
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+
+    ksp(libs.androidx.room.compiler)
 
 }

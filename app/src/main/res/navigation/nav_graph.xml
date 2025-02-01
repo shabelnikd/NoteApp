@@ -3,43 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/onBoardFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/onBoardFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.onboard.OnBoardFragment"
         android:label="fragment_on_board"
-        tools:layout="@layout/fragment_on_board">
-        <action
-            android:id="@+id/action_onBoardFragment_to_firebaseUIActivity"
-            app:destination="@id/firebaseUIActivity" />
-    </fragment>
-    <activity
-        android:id="@+id/firebaseUIActivity"
-        android:name="com.shabelnikd.noteapp.ui.activities.auth.FirebaseUIActivity"
-        android:label="activity_firebase_ui"
-        tools:layout="@layout/activity_firebase_ui" />
+        tools:layout="@layout/fragment_on_board" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_foldersFragment"
-            app:destination="@id/foldersFragment" />
+            android:id="@+id/action_homeFragment_to_addOrChangeNoteFragment"
+            app:destination="@id/addOrChangeNoteFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_left" />
     </fragment>
-    <fragment
-        android:id="@+id/addFolderFragment"
-        android:name="com.shabelnikd.noteapp.ui.fragments.folders.AddFolderFragment"
-        android:label="fragment_add_folder"
-        tools:layout="@layout/fragment_add_folder" />
+
     <fragment
         android:id="@+id/foldersFragment"
         android:name="com.shabelnikd.noteapp.ui.fragments.folders.FoldersFragment"
         android:label="fragment_folders"
         tools:layout="@layout/fragment_folders">
-        <action
-            android:id="@+id/action_foldersFragment_to_addFolderFragment"
-            app:destination="@id/addFolderFragment" />
+
     </fragment>
+    <fragment
+        android:id="@+id/addOrChangeNoteFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.notes.AddOrChangeNoteFragment"
+        android:label="fragment_add_or_change_note"
+        tools:layout="@layout/fragment_add_or_change_note"
+        >
+        <argument
+            android:name="noteId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.auth.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth"/>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.shabelnikd.noteapp.ui.fragments.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

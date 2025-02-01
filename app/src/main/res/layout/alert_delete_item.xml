@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50252525">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="5dp"
+        app:cardBackgroundColor="#5B5B5B"
+        app:cardCornerRadius="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="20dp">
+
+
+            <TextView
+                android:id="@+id/tvAlertFolderOrNoteName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:elegantTextHeight="true"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:textAlignment="center"
+                android:textColor="#90FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Удалить папку?" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDeleteFolderOrNoteCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_btn_new_folder_cancel"
+                android:elegantTextHeight="true"
+                android:text="Отмена"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toStartOf="@id/btnDeleteFolderOrNote"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertFolderOrNoteName"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDeleteFolderOrNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_btn_add_new_folder"
+                android:elegantTextHeight="true"
+                android:text="Удалить"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnDeleteFolderOrNoteCancel"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertFolderOrNoteName"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
