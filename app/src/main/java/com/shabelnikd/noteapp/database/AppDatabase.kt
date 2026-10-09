@@ -14,7 +14,6 @@ import com.shabelnikd.noteapp.database.entities.NoteEntity
         NoteEntity::class
     ],
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
     ]
 )
 
