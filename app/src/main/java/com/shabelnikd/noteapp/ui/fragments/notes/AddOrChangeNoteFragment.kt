@@ -142,8 +142,8 @@ class AddOrChangeNoteFragment : Fragment() {
     }
 
     private fun setTextChangedListeners() {
-        val etTitleStateChange = fun(state: Boolean) { etTitleFilled = state }
-        val etTextStateChange = fun(state: Boolean) { etTextFilled = state }
+            val etTitleStateChange = fun(state: Boolean) { etTitleFilled = state }
+            val etTextStateChange = fun(state: Boolean) { etTextFilled = state }
 
         binding.etNoteTitle.addTextChangedListener(returnTextWatcher(etTitleStateChange))
         binding.etTextNote.addTextChangedListener(returnTextWatcher(etTextStateChange))

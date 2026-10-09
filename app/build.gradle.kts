@@ -4,12 +4,24 @@ plugins {
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
-    id("com.google.dagger.hilt.android")
     id("androidx.room")
+
+    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("C:\\Users\\unix\\.android\\debug.keystore")
+        }
+        create("release") {
+            storeFile = file("C:\\Users\\unix\\mt_sign.jks")
+            storePassword = "211003"
+            keyAlias = "key0"
+            keyPassword = "211003"
+        }
+    }
     namespace = "com.shabelnikd.noteapp"
     compileSdk = 35
 
@@ -21,6 +33,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("release")
     }
 
 

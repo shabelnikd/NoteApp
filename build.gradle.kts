@@ -7,11 +7,11 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.51.1" apply false
     alias(libs.plugins.devtools.ksp) apply false
 }
-buildscript {
-    repositories {
-        google()
+    buildscript {
+        repositories {
+            google()
+        }
+        dependencies {
+            classpath(libs.androidx.navigation.safe.args.gradle.plugin)
+        }
     }
-    dependencies {
-        classpath(libs.androidx.navigation.safe.args.gradle.plugin)
-    }
-}
